@@ -1,5 +1,4 @@
 
-import Button from '@mui/material/Button';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -7,6 +6,8 @@ import Select from '@mui/material/Select';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
+import Container from '@mui/material/Container'
+import Box from '@mui/material/Box'
 import {
   Experimental_CssVarsProvider as CssVarsProvider,
   experimental_extendTheme as extendTheme,
@@ -49,15 +50,34 @@ function ModeSelect() {
 
 function App() {
   return (
-    <>
-      <ModeSelect />
-      <hr />
-      <div>TrungBui</div>
-      <Button color="secondary">Secondary</Button>
-      <Button variant="contained" color="success">
-        Success
-      </Button>
-    </>
+    <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+      <Box sx={{
+        backgroundColor: 'primary.contrastText',
+        width: '100%',
+        height: (theme) => theme.trelloCustom.appBarHeight,
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        <ModeSelect />
+      </Box>
+      <Box sx={{
+        backgroundColor: 'primary.dark',
+        width: '100%',
+        height: (theme) => theme.trelloCustom.boardBarHeight,
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        board bar
+      </Box>
+      <Box sx={{
+        backgroundColor: 'primary.main',
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        height: (theme) => `calc(100vh - ${theme.trelloCustom.appBarHeight} - ${theme.trelloCustom.boardBarHeight})`,
+
+      }}>Board content</Box>
+    </Container>
   )
 }
 
