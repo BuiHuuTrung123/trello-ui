@@ -31,7 +31,7 @@ function Profiles() {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-                    <Avatar sx={{ width: 28, height: 28 }}
+                    <Avatar sx={{ width: 34, height: 34  }}
                         src="https://images.entertainment.ie/person/w780_oEXjCmn6gMM0yHQdMp7RF1CWveP.jpg"
                         alt="loi anh">M</Avatar>
                 </IconButton>
