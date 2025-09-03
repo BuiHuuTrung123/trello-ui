@@ -6,11 +6,8 @@ import Select from '@mui/material/Select';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
-import {
-  Experimental_CssVarsProvider as CssVarsProvider,
-  experimental_extendTheme as extendTheme,
-  useColorScheme,
-} from '@mui/material/styles';
+import Box from '@mui/material/Box'
+import { useColorScheme} from '@mui/material/styles';
 
 function ModeSelect() {
   const { mode, setMode } = useColorScheme();
@@ -22,7 +19,7 @@ function ModeSelect() {
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl size="small" sx={{minWidth: '120px'}}>
       <InputLabel id="label-select-dark-light-mode">Mode</InputLabel>
       <Select
         labelId="label-select-dark-light-mode"
@@ -33,13 +30,13 @@ function ModeSelect() {
       >
 
         <MenuItem value="light">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}><LightModeIcon fontSize='small' />Light</div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap:1 }}><LightModeIcon fontSize='small' />Light</Box>
         </MenuItem>
         <MenuItem value="dark">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}><DarkModeIcon fontSize='small' />Dark</div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><DarkModeIcon fontSize='small' />Dark</Box>
         </MenuItem>
         <MenuItem value="system">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}><SettingsBrightnessIcon fontSize='small' />System</div>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}><SettingsBrightnessIcon fontSize='small' />System</Box>
 
         </MenuItem>
       </Select>
