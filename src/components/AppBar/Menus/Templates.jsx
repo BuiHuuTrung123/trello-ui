@@ -1,4 +1,4 @@
-    import React from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -8,27 +8,28 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Check from '@mui/icons-material/Check';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-    function Templates() {
-        const [anchorEl, setAnchorEl] = React.useState(null);
-              const open = Boolean(anchorEl)
-              const handleClick = (event) => {
-                setAnchorEl(event.currentTarget);
-              }
-              const handleClose = () => {
-                setAnchorEl(null);
-              }
-      return (
-       <Box>
-        <Button
+function Templates() {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+  return (
+    <Box>
+      <Button
+        sx={{ color: 'white' }}
         id="basic-button-templates"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        endIcon={ <KeyboardArrowDownIcon/>}
+        endIcon={<KeyboardArrowDownIcon />}
       >
         Recent
-       
+
       </Button>
       <Menu
         id="basic-menu-templates"
@@ -39,7 +40,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
           'aria-labelledby': 'basic-button-templates'
         }}
       >
-         <MenuItem>
+        <MenuItem>
           <ListItemText inset>Single</ListItemText>
         </MenuItem>
         <MenuItem>
@@ -67,7 +68,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
         </MenuItem>
       </Menu>
     </Box>
-      )
-    }
-    
-    export default Templates
+  )
+}
+
+export default Templates

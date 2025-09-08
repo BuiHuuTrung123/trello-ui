@@ -10,20 +10,25 @@ import AvatarGroup from '@mui/material/AvatarGroup';
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import {capitalizeFirstLetter} from '~/utils/formatter'   
 const MENU_STYLES = {
 
-  color: 'primary.main',
-  bgcolor: 'white', border: 'none',
+  color: 'white',
+  bgcolor: 'transparent', border: 'none',
   paddingX: '5px', borderRadius: '4px',
-  '& .MuiSvgIcon-root': {
-    color: 'primary.main'
-  },
   '&:hover': {
     bgcolor: 'primary.50'
+  },
+  border: 'none',
+  borderRadius: ' 4px',
+  '.MuiSvgIcon-root': {
+    color: 'white'
   }
 
 }
-function BoardBar() {
+function BoardBar({board}) {
+
+
   return (
     <Box sx={{
       width: '100%',
@@ -34,19 +39,18 @@ function BoardBar() {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      borderTop: '1px solid #00bfa5'
-
+      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#2f3640' : 'rgb(34, 114, 167, 1)')
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Chip
           sx={MENU_STYLES}
           icon={<DashboardIcon />}
-          label="Trungbuidev"
+          label={board?.title}
           clickable />
         <Chip
           sx={MENU_STYLES}
           icon={<VpnLockIcon />}
-          label="Public/Private/Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           clickable />
         <Chip
           sx={MENU_STYLES}
@@ -65,31 +69,43 @@ function BoardBar() {
           clickable />
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Button variant="outlined" startIcon={<PersonAddIcon />}>Invite</Button>
+        <Button
+          sx={{
+
+            color: 'white',
+            borderColor: 'white',
+            '&:hover': { borderColor: 'white' }
+          }}
+          variant="outlined" startIcon={<PersonAddIcon />}>Invite</Button>
         <AvatarGroup max={3}
           sx={{
+            gap: '10px',
             '& .MuiAvatar-root': {
               width: 34,
               height: 34,
-              fontSize: 16
+              fontSize: 16,
+              border:'none',
+              color: 'white',
+              cursor: 'pointer',
+              '&:firts-of-type': {bgcolor: '#a4b0be'}
             }
           }}
         >
 
           <Tooltip title='trungbuidev'>
-            <Avatar alt="trungbuidev" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="trungbuidev" src="#" />
           </Tooltip>
           <Tooltip title='trungbuidev'>
-            <Avatar alt="trungbuidev" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="trungbuidev" src="#" />
           </Tooltip>
           <Tooltip title='trungbuidev'>
-            <Avatar alt="trungbuidev" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="trungbuidev" src="#" />
           </Tooltip>
           <Tooltip title='trungbuidev'>
-            <Avatar alt="trungbuidev" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="trungbuidev" src="#" />
           </Tooltip>
           <Tooltip title='trungbuidev'>
-            <Avatar alt="trungbuidev" src="/static/images/avatar/1.jpg" />
+            <Avatar alt="trungbuidev" src="#" />
           </Tooltip>
 
         </AvatarGroup>

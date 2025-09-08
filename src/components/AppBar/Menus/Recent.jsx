@@ -9,26 +9,27 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Check from '@mui/icons-material/Check';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 function Recent() {
-       const [anchorEl, setAnchorEl] = React.useState(null);
-      const open = Boolean(anchorEl)
-      const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-      }
-      const handleClose = () => {
-        setAnchorEl(null);
-      }
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl)
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
   return (
-<Box>
-        <Button
+    <Box>
+      <Button
+        sx={{ color: 'white' }}
         id="basic-button-recent"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        endIcon={ <KeyboardArrowDownIcon/>}
+        endIcon={<KeyboardArrowDownIcon />}
       >
         Recent
-       
+
       </Button>
       <Menu
         id="basic-menu-recent"
@@ -39,7 +40,7 @@ function Recent() {
           'aria-labelledby': 'basic-button-recent'
         }}
       >
-         <MenuItem>
+        <MenuItem>
           <ListItemText inset>Single</ListItemText>
         </MenuItem>
         <MenuItem>
