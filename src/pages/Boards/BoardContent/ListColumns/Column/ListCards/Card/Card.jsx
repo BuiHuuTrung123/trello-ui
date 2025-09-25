@@ -23,7 +23,7 @@ function Card({ card }) {
 
     const dndKitCardStyles = {
         touachAction: 'none',
-        transform: CSS.Translate.toString(transform),
+        transform: CSS.Translate.toString(transform),  
         transition,
         opacity: isDragging ? 0.5 : undefined
     }

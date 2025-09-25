@@ -21,7 +21,7 @@ function ListCards({cards}) {
           ${theme.spacing(5)} -
           ${theme.trelloCustom.columnHeaderHeight} -
           ${theme.trelloCustom.columnFooterHeight}
-          
+            
           )`,
             "&::-webkit-scrollbar-thumb": {
                 backgroundColor: '#ced0da',

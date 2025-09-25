@@ -51,6 +51,7 @@ function Column({ column }) {
         setAnchorEl(null);
     }
     const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
+    console.log('orderedCards:', orderedCards)
     return (
         <div ref={setNodeRef}
             style={dndKitColumnStyles}
@@ -62,14 +63,15 @@ function Column({ column }) {
                     minWidth: '300px',
                     maxWidth: '300px',
                     bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
-                    ml: 2,
+                    ml: 2, 
                     borderRadius: '6px',
-                    height: 'fit-content',
+                    height: 'fit-content', 
                     maxHeight: (theme) => `calc(${theme.trelloCustom.boardContentHeight} - ${theme.spacing(5)})`
-                }}
-            >
+                }} 
+            > 
+            
                 {/* Box header */}
-                <Box sx={{
+                <Box sx={{  
                     height: (theme) => theme.trelloCustom.columnHeaderHeight,
                     p: 2,
                     display: 'flex',

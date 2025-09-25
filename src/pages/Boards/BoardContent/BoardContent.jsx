@@ -16,17 +16,17 @@ function BoardContent({ board }) {
 
   const [orderedColumns, setOrderedColumns] = useState([])
   const [activeDragItemId, setActiveDragItemId] = useState(null)
-  const [activeDragItemType, setActiveDragItemType] = useState(null)
+  const [activeDragItemType, setActiveDragItemType] = useState(null)  
   const [activeDragItemData, setActiveDragItemData] = useState(null)
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null)
-  // Điểm va chạm cuối cùng xử lý thuật toán phát hiện va chạm
+  // Điểm va chạm cuối cùng xử lý thuật toán phát hiện  va chạm
   const lastOverId = useRef(null)
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
+ 
+  }, [board]);
 
-  }, []);
-
-  const dropAnimation = {
+  const dropAnimation = { 
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
         active: {
@@ -210,13 +210,13 @@ function BoardContent({ board }) {
   }, [activeDragItemType, orderedColumns])
   return (
     <DndContext
-      //Thuật toán phát hiện va chạm (nếu ko có nó thì card với cover lớn sẽ ko kéo qua column được vì lúc này nó đang bị conflict giữa card và column), chúng ta sẽ dùng closestConners thay vì closestCenter
+      //Thuật toán phát hiện va chạm (nếu ko có nó thì card v ới cover lớn sẽ ko kéo qua column được vì lúc này nó đang bị conflict giữa card và column), chúng ta sẽ dùng closestConners thay vì closestCenter
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       sensors={sensors}
-      collisionDetection={collisionDetectionStrategy}
-    >
+      collisionDetection={collisionDetectionStrategy}   
+    > 
 
       <Box sx={{
         width: '100%',
