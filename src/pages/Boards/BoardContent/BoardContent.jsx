@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box'
 import ListColumns from './ListColumns/ListColumns'
 import { mapOrder } from '~/utils/sort';
-import { DndContext, useSensor, useSensors, TouchSensor, MouseSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners } from '@dnd-kit/core';
-import { useEffect, useState } from 'react';
+import { DndContext, useSensor, useSensors, TouchSensor, MouseSensor, DragOverlay, defaultDropAnimationSideEffects, closestCorners, pointerWithin, rectIntersection, getFirstCollision, closestCenter } from '@dnd-kit/core';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { arrayMove } from '@dnd-kit/sortable';
 import Column from './ListColumns/Column/Column';
 import Card from './ListColumns/Column/ListCards/Card/Card';
@@ -16,15 +16,17 @@ function BoardContent({ board }) {
 
   const [orderedColumns, setOrderedColumns] = useState([])
   const [activeDragItemId, setActiveDragItemId] = useState(null)
-  const [activeDragItemType, setActiveDragItemType] = useState(null)
+  const [activeDragItemType, setActiveDragItemType] = useState(null)  
   const [activeDragItemData, setActiveDragItemData] = useState(null)
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] = useState(null)
+  // Điểm va chạm cuối cùng xử lý thuật toán phát hiện  va chạm
+  const lastOverId = useRef(null)
   useEffect(() => {
     setOrderedColumns(mapOrder(board?.columns, board?.columnOrderIds, '_id'))
+ 
+  }, [board]);
 
-  }, []);
-
-  const dropAnimation = {
+  const dropAnimation = { 
     sideEffects: defaultDropAnimationSideEffects({
       styles: {
         active: {
@@ -73,12 +75,12 @@ function BoardContent({ board }) {
         //Logic tính toán lấy cardIndex mới (trên hoặc dưới overCard)
         let newCardIndex
         const isBelowOverItem =
-          active.rect.current.translated && active.rect.current.translated.bottom >
+          active.rect.current.translated && active.rect.current.translated.top >
           over.rect.top + over.rect.height
         const modifier = isBelowOverItem ? 1 : 0
         newCardIndex = overCardIndex >= 0 ? overCardIndex + modifier : overColumn?.cards?.length + 1
 
-        const nextColumns = cloneDeep(prevColumn)         
+        const nextColumns = cloneDeep(prevColumn)
         const nextActiveColumn = nextColumns.find(column => column._id === activeColumn._id)
         const nextOverColumn = nextColumns.find(column => column._id === overColumn._id)
 
@@ -177,14 +179,44 @@ function BoardContent({ board }) {
     setActiveDragItemData(null)
     setOldColumnWhenDraggingCard(null)
   }
+  // args = arguments = Các đối số, tham số
+  const collisionDetectionStrategy = useCallback((args) => {
+    if (activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+      return closestCorners({ ...args })
+    }
+    const pointerCollisions = pointerWithin(args)
+    if(!pointerCollisions?.length) return
+    const intersections = pointerCollisions?.length > 0 ? pointerCollisions : rectIntersection(args)
+    // Tìm overId đầu tiên trong danh sách va chạm 
+    
+    let overId = getFirstCollision(pointerCollisions, 'id')
+    if (overId) {
+      const checkColumn = orderedColumns.find(column => column._id === overId)
+      if (checkColumn) {
+        overId = closestCorners({
+          ...args,
+          droppableContainers: args.droppableContainers.filter(container => {
+            return (container.id !== overId) && (checkColumn?.cardOrderIds?.includes(container.id))
+            }) [0]?.id
+        })
+      }
+
+      lastOverId.current = overId
+      return [{ id: overId }]
+    }
+    return lastOverId.current ? [{ id: lastOverId.current }] : []
+    // If there are no collisions with the pointer, return rectangle intersections
+
+  }, [activeDragItemType, orderedColumns])
   return (
     <DndContext
+      //Thuật toán phát hiện va chạm (nếu ko có nó thì card v ới cover lớn sẽ ko kéo qua column được vì lúc này nó đang bị conflict giữa card và column), chúng ta sẽ dùng closestConners thay vì closestCenter
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
       sensors={sensors}
-      collisionDetection={closestCorners}
-    >
+      collisionDetection={collisionDetectionStrategy}   
+    > 
 
       <Box sx={{
         width: '100%',

@@ -1,62 +1,138 @@
 /**
- * YouTube: TrungQuanDev - Một Lập Trình Viên
- * Created by trungquandev.com's author on Jun 28, 2023
+ * Mock Data cho trang bán thực phẩm chức năng Gym
+ * Author: Bạn 😎
  */
 export const mockData = {
   board: {
     _id: 'board-id-01',
-    title: 'TrungQuanDev MERN Stack Board',
-    description: 'Pro MERN stack Course',
-    type: 'public', // 'private'
-    ownerIds: [], // Những users là Admin của board
-    memberIds: [], // Những users là member bình thường của board
-    columnOrderIds: ['column-id-02', 'column-id-03', 'column-id-01'], // Thứ tự sắp xếp / vị trí của các Columns trong 1 boards
+    title: 'Supplement Store',
+    description: 'Các loại thực phẩm chức năng cho Gymer',
+    type: 'public',
+    ownerIds: [],
+    memberIds: [],
+    columnOrderIds: ['column-id-01', 'column-id-02', 'column-id-03'],
     columns: [
       {
         _id: 'column-id-01',
         boardId: 'board-id-01',
-        title: 'To Do Column 01',
-        cardOrderIds: ['card-id-01', 'card-id-02', 'card-id-03', 'card-id-04', 'card-id-05', 'card-id-06', 'card-id-07'],
+        title: 'Whey Protein',
+        cardOrderIds: ['card-id-01', 'card-id-02', 'card-id-03'],
         cards: [
           {
             _id: 'card-id-01',
             boardId: 'board-id-01',
             columnId: 'column-id-01',
-            title: 'Title of card 01',
-            description: 'Markdown Syntax (sẽ ở khóa nâng cao nhé)',
-            cover: 'https://trungquandev.com/wp-content/uploads/2022/07/fair-mern-stack-advanced-banner-trungquandev.jpg',
-            memberIds: ['test-user-id-01'],
-            comments: ['test comment 01', 'test comment 02'],
-            attachments: ['test attachment 01', 'test attachment 02', 'test attachment 03']
+            title: 'Whey Protein Gold Standard',
+            description: 'Whey isolate chất lượng cao, phục hồi cơ bắp nhanh.',
+            cover: 'https://i.ibb.co/ZLkhk9J/whey-gold.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
           },
-          { _id: 'card-id-02', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 02', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-03', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 03', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-04', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 04', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-05', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 05', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-06', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 06', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-07', boardId: 'board-id-01', columnId: 'column-id-01', title: 'Title of card 07', description: null, cover: null, memberIds: [], comments: [], attachments: [] }
+          {
+            _id: 'card-id-02',
+            boardId: 'board-id-01',
+            columnId: 'column-id-01',
+            title: 'ISO 100 Dymatize',
+            description: 'Whey isolate thủy phân hấp thụ nhanh, ít lactose.',
+            cover: 'https://i.ibb.co/4gPps4j/iso100.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          },
+          {
+            _id: 'card-id-03',
+            boardId: 'board-id-01',
+            columnId: 'column-id-01',
+            title: 'Rule1 Whey Blend',
+            description: 'Kết hợp Whey isolate & concentrate, giá hợp lý.',
+            cover: 'https://i.ibb.co/0cPQTD9/rule1.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          }
         ]
       },
       {
         _id: 'column-id-02',
         boardId: 'board-id-01',
-        title: 'Inprogress Column 02',
-        cardOrderIds: ['card-id-08', 'card-id-09', 'card-id-10'],
+        title: 'Creatine & BCAA',
+        cardOrderIds: ['card-id-04', 'card-id-05', 'card-id-06'],
         cards: [
-          { _id: 'card-id-08', boardId: 'board-id-01', columnId: 'column-id-02', title: 'Title of card 08', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-09', boardId: 'board-id-01', columnId: 'column-id-02', title: 'Title of card 09', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-10', boardId: 'board-id-01', columnId: 'column-id-02', title: 'Title of card 10', description: null, cover: null, memberIds: [], comments: [], attachments: [] }
+          {
+            _id: 'card-id-04',
+            boardId: 'board-id-01',
+            columnId: 'column-id-02',
+            title: 'Creatine Monohydrate',
+            description: 'Hỗ trợ sức mạnh và tăng cơ nhanh chóng.',
+            cover: 'https://i.ibb.co/9TtJY7H/creatine.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          },
+          {
+            _id: 'card-id-05',
+            boardId: 'board-id-01',
+            columnId: 'column-id-02',
+            title: 'BCAA Xtend',
+            description: 'Chống dị hóa cơ, tăng sức bền khi tập luyện.',
+            cover: 'https://i.ibb.co/N7XqWnH/bcaa.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          },
+          {
+            _id: 'card-id-06',
+            boardId: 'board-id-01',
+            columnId: 'column-id-02',
+            title: 'Glutamine',
+            description: 'Phục hồi cơ bắp và hệ miễn dịch.',
+            cover: 'https://i.ibb.co/vwWwzdT/glutamine.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          }
         ]
       },
       {
         _id: 'column-id-03',
         boardId: 'board-id-01',
-        title: 'Done Column 03',
-        cardOrderIds: ['card-id-11', 'card-id-12', 'card-id-13'],
+        title: 'Pre-workout & Mass Gainer',
+        cardOrderIds: ['card-id-07', 'card-id-08', 'card-id-09'],
         cards: [
-          { _id: 'card-id-11', boardId: 'board-id-01', columnId: 'column-id-03', title: 'Title of card 11', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-12', boardId: 'board-id-01', columnId: 'column-id-03', title: 'Title of card 12', description: null, cover: null, memberIds: [], comments: [], attachments: [] },
-          { _id: 'card-id-13', boardId: 'board-id-01', columnId: 'column-id-03', title: 'Title of card 13', description: null, cover: null, memberIds: [], comments: [], attachments: [] }
+          {
+            _id: 'card-id-07',
+            boardId: 'board-id-01',
+            columnId: 'column-id-03',
+            title: 'Pre-Workout C4 Original',
+            description: 'Tăng năng lượng, tập trung và sức bền khi tập.',
+            cover: 'https://i.ibb.co/J7fxQNk/preworkout.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          },
+          {
+            _id: 'card-id-08',
+            boardId: 'board-id-01',
+            columnId: 'column-id-03',
+            title: 'Serious Mass Gainer',
+            description: 'Dành cho người gầy khó tăng cân.',
+            cover: 'https://i.ibb.co/ykcJZ4M/mass-gainer.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          },
+          {
+            _id: 'card-id-09',
+            boardId: 'board-id-01',
+            columnId: 'column-id-03',
+            title: 'Fish Oil Omega-3',
+            description: 'Hỗ trợ tim mạch & giảm viêm cơ bắp.',
+            cover: 'https://i.ibb.co/h7bJqg0/fish-oil.jpg',
+            memberIds: [],
+            comments: [],
+            attachments: []
+          }
         ]
       }
     ]

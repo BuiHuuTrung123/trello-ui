@@ -22,7 +22,7 @@ function ListColumns({ columns }) {
 
             {/* Add new column */}
             <Box sx={{
-                minWidth: '200px',
+                minWidth: '200px', 
                 maxWidth: '200px',
                 mx: 2,
                 borderRadius: '6px',
@@ -35,7 +35,8 @@ function ListColumns({ columns }) {
                     justifyContent: 'flex-start',
                     pl: 2.5,
                     py: 1
-                }}>Add column</Button>
+                }} >Add column</Button>
+                
             </Box>
 
         </Box>
