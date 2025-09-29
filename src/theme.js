@@ -6,7 +6,11 @@ const BOARD_CONTENT_HEIGHT = `calc(100vh - ${APP_BAR_HEIGHT} - ${BOARD_BAR_HEIGH
 const COLUMN_HEADER_HEIGHT = '50px'
 const COLUMN_FOOTER_HEIGHT = '56px'
 // Create a theme instance.
+
 const theme = extendTheme({
+    palette: {
+        mode: 'light', // hoặc 'dark'
+    },
     trelloCustom: {
         appBarHeight: APP_BAR_HEIGHT,
         boardBarHeight: BOARD_BAR_HEIGHT,
@@ -16,10 +20,11 @@ const theme = extendTheme({
     },
 
     components: {
+
         MuiCssBaseline: {
             styleOverrides: {
                 "html, body, & *": {
-                     overscrollBehavior: 'none',
+                    overscrollBehavior: 'none',
                     "*::-webkit-scrollbar": {
                         width: "8px",
                         height: "8px",

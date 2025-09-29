@@ -23,7 +23,7 @@ function Card({ card }) {
 
     const dndKitCardStyles = {
         touachAction: 'none',
-        transform: CSS.Translate.toString(transform),  
+        transform: CSS.Translate.toString(transform),
         transition,
         opacity: isDragging ? 0.5 : undefined
     }
@@ -33,15 +33,35 @@ function Card({ card }) {
     }
     return (
         <MuiCard
+
             ref={setNodeRef}
             style={dndKitCardStyles}
             {...attributes}
             {...listeners}
             sx={{
                 cursor: 'pointer',
-                boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
-                overflow: 'unset'
-            }}>
+                borderRadius: 2, // bo tròn khớp column
+                bgcolor: (theme) =>
+                    theme.palette.mode === "light"
+                        ? "rgba(255,255,255,0.85)"   // nền trắng trong suốt nhẹ
+                        : "rgba(60, 60, 60, 0.5) ",     // nền tối trong suốt nhẹ
+                boxShadow: '0 1px 3px rgba(0,0,0,0.15)', // shadow mềm hơn
+                border: '1px solid transparent',
+                overflow: 'unset',
+                display: card?.FE_PlaceholderCard ? 'none' : 'block',
+                transition: 'all 0.2s ease-in-out',
+
+                '&:hover': {
+                    transform: 'translateY(-2px)', // hover nổi khẽ
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.25)',
+                    borderColor: (theme) => theme.palette.primary.main,
+                    bgcolor: (theme) =>
+                        theme.palette.mode === "light"
+                            ? "rgba(255,255,255,0.95)"
+                            : "rgba(40,40,40,0.8)"
+                }
+            }}
+        >
             {card?.cover &&
                 <CardMedia
                     sx={{ height: 140 }}

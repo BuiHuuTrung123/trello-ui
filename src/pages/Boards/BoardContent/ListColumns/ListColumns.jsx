@@ -1,45 +1,135 @@
-import React from 'react'
+import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Column from './Column/Column'
 import Button from '@mui/material/Button'
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import {SortableContext, horizontalListSortingStrategy} from '@dnd-kit/sortable';   
-function ListColumns({ columns }) {
+import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
+import TextField from '@mui/material/TextField'
+import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-toastify'
+function ListColumns({ columns, createNewColumn, createNewCard }) {
+    const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
+    
+    const toggleOpenNewColumnForm = () => {
+        setOpenNewColumnForm(!openNewColumnForm)
+    }
 
+    const [newColumnTitle, setNewColumnTitle] = useState('')
+
+    const addNewColumn = async () => {
+        if (!newColumnTitle) {
+            toast.error('Column title is required')
+            return
+        }
+
+        //Call API add new column
+        const newColumnTitleData = {
+            title: newColumnTitle,
+        }
+        await createNewColumn(newColumnTitleData)
+        //Reset form    
+        toggleOpenNewColumnForm()
+        setNewColumnTitle('')
+    }
     return (
-        <SortableContext items={columns.map(column =>column._id)} strategy={horizontalListSortingStrategy}>
-        <Box sx={{
-            bgcolor: 'inherit',
-            width: '100%',
-            height: '100%',
-            overflowX: 'auto',
-            display: 'flex',
-            overFloxY: 'hidden',
-            "&::-webkit-scrollbar-track": { m: 2 }
-        }}>
-            {columns?.map(column => <Column key={column._id} column={column} />)}
-
-
-            {/* Add new column */}
+        <SortableContext items={columns.map(column => column._id)} strategy={horizontalListSortingStrategy}>
             <Box sx={{
-                minWidth: '200px', 
-                maxWidth: '200px',
-                mx: 2,
-                borderRadius: '6px',
-                height: 'fit-content',
-                bgcolor: '#ffffff3d'
+                bgcolor: 'inherit',
+                width: '100%',
+                height: '100%',
+                overflowX: 'auto',
+                display: 'flex',
+                overFloxY: 'hidden',
+                "&::-webkit-scrollbar-track": { m: 2 }
             }}>
-                <Button startIcon={<NoteAddIcon />} sx={{
-                    color: 'white',
-                    width: '100%',
-                    justifyContent: 'flex-start',
-                    pl: 2.5,
-                    py: 1
-                }} >Add column</Button>
-                
-            </Box>
+                {columns?.map(column => <Column key={column._id} column={column} createNewCard={createNewCard} />)}
 
-        </Box>
+
+                {/* Add new column */}
+                {!openNewColumnForm
+                    ? <Box onClick={toggleOpenNewColumnForm} sx={{
+                        minWidth: '250px',
+                        maxWidth: '250px',
+                        mx: 2,
+                        borderRadius: '6px',
+                        height: 'fit-content',
+                        bgcolor: '#ffffff3d'
+                    }}>
+                        <Button startIcon={<NoteAddIcon />} sx={{
+                            color: 'white',
+                            width: '100%',
+                            justifyContent: 'flex-start',
+                            pl: 2.5,
+                            py: 1
+                        }} >Add column</Button>
+
+                    </Box>
+                    : <Box sx={{
+                        minWidth: '250px',
+                        maxWidth: '250px',
+                        mx: 2,
+                        borderRadius: '6px',
+                        height: 'fit-content',
+                        bgcolor: '#ffffff3d',
+                        p: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 1
+
+                    }}>  <TextField
+                            value={newColumnTitle}
+                            onChange={(e) => setNewColumnTitle(e.target.value)}
+                            label="Enter column title..." type="text" size="small" variant='outlined' autoFocus
+                            sx={{
+                                '& label': { color: 'white' },
+                                '& input': { color: 'white' },
+                                '& label.Mui-focused': { color: 'white' },
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: 'white'
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: 'white'
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: 'white'
+                                    }
+                                }
+                            }} />
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Button onClick={addNewColumn} variant='contained' color='success' size='small'
+                                sx={{
+                                    boxShadow: 'none',
+                                    border: '0.5px solid',
+                                    borderColor: (theme) => theme.palette.success.main,
+                                    '&:hover': {
+                                        bgcolor: (theme) => theme.palette.success.dark,
+                                        boxShadow: 'none', borderColor: (theme) => theme.palette.success.main
+                                    }
+                                }}>
+                                Add Column
+
+                            </Button>
+                            <CloseIcon
+                                onClick={toggleOpenNewColumnForm}
+                                fontSize='small'
+                                cursor='pointer'
+                                sx={{
+                                    color: 'white',
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        bgcolor: (theme) => theme.palette.warning.dark,
+                                        boxShadow: 'none', borderColor: (theme) => theme.palette.success.main
+                                    }
+                                }} />
+                        </Box>
+                    </Box>
+
+
+                }
+
+
+            </Box>
         </SortableContext>
     )
 }
