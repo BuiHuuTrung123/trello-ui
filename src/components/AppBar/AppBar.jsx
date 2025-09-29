@@ -34,7 +34,15 @@ function AppBar() {
             justifyContent: 'space-between',
             gap: 2,
             overflowX: 'auto',
-            bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#1e272e' : 'hsl(215, 90%, 32.7%)'),
+            backgroundImage: (theme) =>
+                theme.palette.mode === 'light'
+                    ? "linear-gradient(135deg, #0052a3, #673ab7)" // xanh → tím
+                    : "linear-gradient(135deg, #0d1b2a, #2c003e)",
+            borderBottom: (theme) =>
+                theme.palette.mode === 'light'
+                    ? '1px solid rgba(255,255,255,0.15)'
+                    : '1px solid rgba(255,255,255,0.05)',
+            transition: 'background-image 0.4s ease',
         }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <AppsIcon sx={{ color: 'white' }} />
@@ -67,12 +75,13 @@ function AppBar() {
                             </InputAdornment>
                         ),
                         endAdornment: (
-                            <CloseIcon
-                                onClick={() => setSearchValue('')}
-                                fontSize='small'
-                                cursor='pointer'
-                                sx={{ color: searchValue ? '#bdc3c7' : 'transparent' }} />
-
+                            <InputAdornment position="end">
+                                <CloseIcon
+                                    onClick={() => setSearchValue('')}
+                                    fontSize='small'
+                                    cursor='pointer'
+                                    sx={{ color: searchValue ? '#bdc3c7' : 'transparent' }} />
+                            </InputAdornment>
                         )
                     }}
                     id="outlined-search" label="Search..." type="text" size="small"

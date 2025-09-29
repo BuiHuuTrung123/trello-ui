@@ -18,11 +18,13 @@ import AddCardIcon from '@mui/icons-material/AddCard'
 import DragHandleIcon from '@mui/icons-material/DragHandle'
 import Button from '@mui/material/Button'
 import ListCards from './ListCards/ListCards'
-import { mapOrder } from '~/utils/sort';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { ACTIVE_DRAG_ITEM_TYPE } from '~/constants/constant'
-function Column({ column }) {
+import TextField from '@mui/material/TextField'
+import CloseIcon from '@mui/icons-material/Close';
+
+function Column({ column , createNewCard }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: column._id,
         data: {
@@ -50,8 +52,28 @@ function Column({ column }) {
     const handleClose = () => {
         setAnchorEl(null);
     }
-    const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, '_id')
-    console.log('orderedCards:', orderedCards)
+    const orderedCards = column?.cards
+
+    const [openNewCardForm, setOpenNewCardForm] = useState(false)
+    const toggleOpenNewCardForm = () => {
+        setOpenNewCardForm(!openNewCardForm)
+    }
+    const [newCardTitle, setNewCardTitle] = useState('')
+    const addNewCard =  () => {
+        if (!newCardTitle) {
+            alert('Card title is required')
+            return
+        }
+        //Call API add new card
+         const newColumnTitleData = {
+            title: newCardTitle,
+            columnId: column._id
+        }
+         createNewCard(newColumnTitleData)
+        //Reset form    
+        toggleOpenNewCardForm()
+        setNewCardTitle('')
+    }
     return (
         <div ref={setNodeRef}
             style={dndKitColumnStyles}
@@ -62,16 +84,20 @@ function Column({ column }) {
                 sx={{
                     minWidth: '300px',
                     maxWidth: '300px',
-                    bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#333643' : '#ebecf0'),
-                    ml: 2, 
-                    borderRadius: '6px',
-                    height: 'fit-content', 
+                    bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.65)' : "rgba(255, 255, 255, 0.75)"),
+                    backdropFilter: "blur(12px)",
+                    borderRadius: "15px",
+                    boxShadow:(theme) => theme.palette.mode === "light"
+                        ? "0 4px 20px rgba(0,0,0,0.1)"
+                        : "0 4px 20px rgba(0,0,0,0.5)",
+                    ml: 2,
+                    height: 'fit-content',
                     maxHeight: (theme) => `calc(${theme.trelloCustom.boardContentHeight} - ${theme.spacing(5)})`
-                }} 
-            > 
-            
+                }}
+            >
+
                 {/* Box header */}
-                <Box sx={{  
+                <Box sx={{
                     height: (theme) => theme.trelloCustom.columnHeaderHeight,
                     p: 2,
                     display: 'flex',
@@ -147,17 +173,71 @@ function Column({ column }) {
                 <Box sx={{
                     height: (theme) => theme.trelloCustom.columnFooterHeight,
                     p: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
                 }}>
-                    <Button startIcon={<AddCardIcon />}>Add new card</Button>
-                    <Tooltip title="Drag to move">
-                        <DragHandleIcon sx={{
-                            cursor: 'pointer'
-                        }} />
+                    {!openNewCardForm
+                        ? <Box sx={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between'
+                        }}>
+                            <Button startIcon={<AddCardIcon />} onClick={toggleOpenNewCardForm}>Add new card</Button>
+                            <Tooltip title="Drag to move">
+                                <DragHandleIcon sx={{
+                                    cursor: 'pointer'
+                                }} />
 
-                    </Tooltip>
+                            </Tooltip>
+                        </Box>
+                        : <Box sx={{
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 1
+                        }}>
+                            <TextField
+                                value={newCardTitle}
+                                onChange={(e) => setNewCardTitle(e.target.value)}
+                                label="Enter card title..." type="text" size="small" variant='outlined' autoFocus
+                                data-no-dnd= 'true'
+                                sx={{
+
+                                }} />
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Button onClick={addNewCard} variant='contained' color='success' size='small'  data-no-dnd= 'true'
+                                    sx={{
+                                        boxShadow: 'none',
+                                        border: '0.5px solid',
+                                        borderColor: (theme) => theme.palette.success.main,
+                                        '&:hover': {
+                                            bgcolor: (theme) => theme.palette.success.dark,
+                                            boxShadow: 'none', borderColor: (theme) => theme.palette.success.main
+                                        },
+                                        height: '40px'
+                                    }}>
+                                    Add
+                                </Button>
+                                <CloseIcon
+                                    onClick={toggleOpenNewCardForm}
+                                    fontSize='small'
+                                    cursor='pointer'
+                                     data-no-dnd= 'true'
+                                    sx={{
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        '&:hover': {
+                                            bgcolor: (theme) => theme.palette.warning.dark,
+                                            boxShadow: 'none', borderColor: (theme) => theme.palette.success.main
+                                        }
+                                    }} />
+                            </Box>
+                        </Box>
+
+
+                    }
+
+
+
                 </Box>
             </Box>
         </div>

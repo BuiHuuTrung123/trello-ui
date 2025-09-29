@@ -39,7 +39,8 @@ function BoardBar({ board }) {
       justifyContent: 'space-between',
       gap: 2,
       overflowX: 'auto',
-      bgcolor: (theme) => (theme.palette.mode === 'dark' ? '#2f3640' : 'rgb(34, 114, 167, 1)')
+      bgcolor:'transparent',
+  
     }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Tooltip title={board?.description}>
