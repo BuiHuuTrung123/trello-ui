@@ -9,7 +9,11 @@ import { cloneDeep, isEmpty } from 'lodash'
 import { ACTIVE_DRAG_ITEM_TYPE } from '~/constants/constant'
 import { generatePlaceholderCard } from '~/utils/formatter'
 import { MouseSensor, TouchSensor } from '~/customLibraries/dndKitSensors';
-function BoardContent({ board, createNewColumn, createNewCard, moveColumns, moveCardInTheSameColumn, moveCardToDifferentColumn }) {
+function BoardContent({
+  board,
+  moveColumns,
+  moveCardInTheSameColumn,
+  moveCardToDifferentColumn }) {
   //yeeu cau di chuyen 10px moi kich hoat drag
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } })
   const touchSensor = useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
@@ -118,7 +122,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
       setOldColumnWhenDraggingCard(findColumnByCardId(event?.active?.id))
 
     }
-    
+
   }
 
 
@@ -186,7 +190,7 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
           'handleDragEnd'
         )
 
-      
+
       }
       else {
         // hành động kéo thả card trong cùng 1 column
@@ -219,11 +223,11 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
       const newColumnIndex = orderedColumns.findIndex(c => c._id === over.id)
 
       const dndOrderedColumns = arrayMove(orderedColumns, oldColumnIndex, newColumnIndex)
-          moveColumns(dndOrderedColumns)
+      moveColumns(dndOrderedColumns)
 
       setOrderedColumns(dndOrderedColumns)
 
-  
+
     }
     // Reset state
     setActiveDragItemId(null)
@@ -289,8 +293,6 @@ function BoardContent({ board, createNewColumn, createNewCard, moveColumns, move
       }}>
         <ListColumns
           columns={orderedColumns}
-          createNewColumn={createNewColumn}
-          createNewCard={createNewCard}
         />
 
         <DragOverlay dropAnimation={dropAnimation}>

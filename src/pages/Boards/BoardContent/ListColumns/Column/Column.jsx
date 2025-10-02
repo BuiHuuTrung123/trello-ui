@@ -23,8 +23,18 @@ import { CSS } from '@dnd-kit/utilities';
 import { ACTIVE_DRAG_ITEM_TYPE } from '~/constants/constant'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close';
-
-function Column({ column , createNewCard }) {
+import { cloneDeep } from 'lodash'
+import { createNewCardApi } from '~/apis'
+import {
+    updateCurrentActiveBoard,
+    selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+function Column({ column }) {
+    // Lấy dữ liệu state trong redux
+    const board = useSelector(selectCurrentActiveBoard)
+    const dispatch = useDispatch()
+    //
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id: column._id,
         data: {
@@ -59,17 +69,33 @@ function Column({ column , createNewCard }) {
         setOpenNewCardForm(!openNewCardForm)
     }
     const [newCardTitle, setNewCardTitle] = useState('')
-    const addNewCard =  () => {
+    const addNewCard = async () => {
         if (!newCardTitle) {
             alert('Card title is required')
             return
         }
         //Call API add new card
-         const newColumnTitleData = {
+        const createdCard = await createNewCardApi({
             title: newCardTitle,
-            columnId: column._id
+            columnId: column._id,
+            boardId: board._id
+
+        })
+        const newBoard = cloneDeep(board)
+        const columnToUpdate = newBoard.columns.find(c => c._id === createdCard.columnId)
+        if (columnToUpdate) {
+            if (columnToUpdate.cards.some(card => card.FE_PlaceholderCard)) {
+                columnToUpdate.cards = [createdCard]
+                columnToUpdate.cardOrderIds = [createdCard._id]
+            }
+            else {
+                columnToUpdate.cards.push(createdCard)
+                columnToUpdate.cardOrderIds.push(createdCard._id)
+            }
+
         }
-         createNewCard(newColumnTitleData)
+        dispatch(updateCurrentActiveBoard(newBoard))
+
         //Reset form    
         toggleOpenNewCardForm()
         setNewCardTitle('')
@@ -87,7 +113,7 @@ function Column({ column , createNewCard }) {
                     bgcolor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(30, 30, 30, 0.65)' : "rgba(255, 255, 255, 0.75)"),
                     backdropFilter: "blur(12px)",
                     borderRadius: "15px",
-                    boxShadow:(theme) => theme.palette.mode === "light"
+                    boxShadow: (theme) => theme.palette.mode === "light"
                         ? "0 4px 20px rgba(0,0,0,0.1)"
                         : "0 4px 20px rgba(0,0,0,0.5)",
                     ml: 2,
@@ -199,12 +225,12 @@ function Column({ column , createNewCard }) {
                                 value={newCardTitle}
                                 onChange={(e) => setNewCardTitle(e.target.value)}
                                 label="Enter card title..." type="text" size="small" variant='outlined' autoFocus
-                                data-no-dnd= 'true'
+                                data-no-dnd='true'
                                 sx={{
 
                                 }} />
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                <Button onClick={addNewCard} variant='contained' color='success' size='small'  data-no-dnd= 'true'
+                                <Button onClick={addNewCard} variant='contained' color='success' size='small' data-no-dnd='true'
                                     sx={{
                                         boxShadow: 'none',
                                         border: '0.5px solid',
@@ -221,7 +247,7 @@ function Column({ column , createNewCard }) {
                                     onClick={toggleOpenNewCardForm}
                                     fontSize='small'
                                     cursor='pointer'
-                                     data-no-dnd= 'true'
+                                    data-no-dnd='true'
                                     sx={{
                                         color: 'white',
                                         cursor: 'pointer',

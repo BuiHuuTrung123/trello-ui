@@ -7,9 +7,19 @@ import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortabl
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close';
 import { toast } from 'react-toastify'
-function ListColumns({ columns, createNewColumn, createNewCard }) {
+import { generatePlaceholderCard } from '~/utils/formatter'
+import { cloneDeep } from 'lodash'
+import { createNewColumnApi } from '~/apis'
+import {
+    updateCurrentActiveBoard,
+    selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
+import { useDispatch, useSelector } from 'react-redux'
+function ListColumns({ columns }) {
+    const board = useSelector(selectCurrentActiveBoard)
+    const dispatch = useDispatch()
     const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
-    
+
     const toggleOpenNewColumnForm = () => {
         setOpenNewColumnForm(!openNewColumnForm)
     }
@@ -23,10 +33,21 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
         }
 
         //Call API add new column
-        const newColumnTitleData = {
+        const createdColumn = await createNewColumnApi({
             title: newColumnTitle,
-        }
-        await createNewColumn(newColumnTitleData)
+            boardId: board._id
+        })
+        //them card placeholder
+        createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+        createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
+        //cap nhat lai state board
+        // bản chất của spread operator là  Shallow copy/clone nên dính phải rules immutability trong redux toolkit ko dùng dc push
+        //Cách 2 dùng concat để merge mảng
+        const newBoard = cloneDeep(board)
+        newBoard.columns.push(createdColumn)
+        newBoard.columnOrderIds.push(createdColumn._id)
+        dispatch(updateCurrentActiveBoard(newBoard))
+
         //Reset form    
         toggleOpenNewColumnForm()
         setNewColumnTitle('')
@@ -42,7 +63,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
                 overFloxY: 'hidden',
                 "&::-webkit-scrollbar-track": { m: 2 }
             }}>
-                {columns?.map(column => <Column key={column._id} column={column} createNewCard={createNewCard} />)}
+                {columns?.map(column => <Column key={column._id} column={column} />)}
 
 
                 {/* Add new column */}
