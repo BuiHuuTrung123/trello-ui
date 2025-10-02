@@ -1,4 +1,4 @@
-import axios from 'axios'
+import authorizeAxiosInstance from '~/utils/authorizeAxios'
 import { API_ROOT } from '~/utils/constants'
 
 // export const fetchBoardDetailsAPI = async (boardId) => {
@@ -7,28 +7,28 @@ import { API_ROOT } from '~/utils/constants'
 // }
 
 export const updateBoardDetailsApi = async (boardId, updateData) => {
-    const respone = await axios.put(`${API_ROOT}/v1/boards/${boardId}`, updateData)
+    const respone = await authorizeAxiosInstance.put(`${API_ROOT}/v1/boards/${boardId}`, updateData)
 
     return respone.data
 }
 export const moveCardToDifferentColumnApi = async ( updateData) => {
-    const respone = await axios.put(`${API_ROOT}/v1/boards/supports/moving_card`, updateData)
+    const respone = await authorizeAxiosInstance.put(`${API_ROOT}/v1/boards/supports/moving_card`, updateData)
 
     return respone.data
 }
 //Column
 export const createNewColumnApi = async (newColumnData) => {
-    const respone = await axios.post(`${API_ROOT}/v1/columns`, newColumnData)
+    const respone = await authorizeAxiosInstance.post(`${API_ROOT}/v1/columns`, newColumnData)
 
     return respone.data
 }
 export const updateColumnDetailsApi = async (columnId, updateData,) => {
-    const respone = await axios.put(`${API_ROOT}/v1/columns/${columnId}`, updateData)
+    const respone = await authorizeAxiosInstance.put(`${API_ROOT}/v1/columns/${columnId}`, updateData)
     return respone.data
 }
 //Card 
 export const createNewCardApi = async (newCardData) => {
-    const respone = await axios.post(`${API_ROOT}/v1/cards`, newCardData)
+    const respone = await authorizeAxiosInstance.post(`${API_ROOT}/v1/cards`, newCardData)
 
     return respone.data
 }

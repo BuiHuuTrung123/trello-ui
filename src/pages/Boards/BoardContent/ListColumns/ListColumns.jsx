@@ -118,7 +118,9 @@ function ListColumns({ columns }) {
                                 }
                             }} />
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Button onClick={addNewColumn} variant='contained' color='success' size='small'
+                            <Button
+                            className= 'interceptor-loading'
+                            onClick={addNewColumn} variant='contained' color='success' size='small'
                                 sx={{
                                     boxShadow: 'none',
                                     border: '0.5px solid',
