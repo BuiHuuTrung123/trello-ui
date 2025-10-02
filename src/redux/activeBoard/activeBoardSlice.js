@@ -33,6 +33,7 @@ export const activeBoardSlice = createSlice({
             //Update dữ liệu của currentActiveBoard
             state.currentActiveBoard = board
         }
+        
     },
     //extraReducers nơi xử lý dữ liệu bất đồng bộ 
     extraReducers: (builder) => {
