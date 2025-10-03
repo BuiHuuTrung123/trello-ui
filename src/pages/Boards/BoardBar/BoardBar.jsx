@@ -15,7 +15,7 @@ const MENU_STYLES = {
 
   color: 'white',
   bgcolor: 'transparent', border: 'none',
-  paddingX: '5px', borderRadius: '4px',
+  paddingX: '5px',
   '&:hover': {
     bgcolor: 'primary.50'
   },
