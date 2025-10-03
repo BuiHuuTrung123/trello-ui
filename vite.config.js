@@ -4,7 +4,7 @@ import svgr from 'vite-plugin-svgr'
 // https://vitejs.dev/config/
 export default defineConfig({
   // cho phep su dung duoc process.env (mac dinh la import.meta.env)
-  base: './',
+  base: '',
   plugins: [react(), svgr()],
   // base: './'
   resolve: {
