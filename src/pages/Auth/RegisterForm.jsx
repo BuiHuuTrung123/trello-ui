@@ -11,7 +11,7 @@ import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
 import { useForm } from 'react-hook-form'
-import FieldErrorAlert from '~/Components/Form/FieldErrorAlert'
+import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import {
   FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE,
