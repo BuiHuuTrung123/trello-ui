@@ -13,7 +13,6 @@ function ListCards({cards}) {
             display: 'flex',
             flexDirection: 'column',
             gap: 1.5,
-            p: 2,
             overflowX: 'hidden',
             overflowY: 'auto',
             maxHeight: (theme) => `calc(
