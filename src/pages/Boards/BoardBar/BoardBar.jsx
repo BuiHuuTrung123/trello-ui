@@ -14,7 +14,7 @@ import { capitalizeFirstLetter } from '~/utils/formatter'
 const MENU_STYLES = {
 
   color: 'white',
-  bgcolor: 'transparent', border: 'none',
+  bgcolor: 'transparent', 
   paddingX: '5px',
   '&:hover': {
     bgcolor: 'primary.50'
