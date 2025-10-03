@@ -11,15 +11,15 @@ authorizeAxiosInstance.defaults.withCredentials = true
 // Add a request interceptor
 
 // interceptor request : can thiep vao request api
-authorizeAxiosInstance.interceptors.request.use((config) => {
-    //Ky thuat chan spam click
-    interceptorLoadingElements(true)
-    return config
-}, (error) => {
+    authorizeAxiosInstance.interceptors.request.use((config) => {
+        //Ky thuat chan spam click
+        interceptorLoadingElements(true)
+        return config
+    }, (error) => {
 
-    return Promise.reject(error)
-},
-)
+        return Promise.reject(error)
+    },
+    )
 
 // Add a response interceptor
 
