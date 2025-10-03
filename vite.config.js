@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr'
 export default defineConfig({
   // cho phep su dung duoc process.env (mac dinh la import.meta.env)
   plugins: [react(), svgr()],
-  // base: './'
+   base: './',
   resolve: {
     alias: [
       { find: '~', replacement: '/src' }
