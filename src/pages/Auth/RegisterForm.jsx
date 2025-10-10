@@ -12,7 +12,7 @@ import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
 import { useForm } from 'react-hook-form'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
-import { registerUserAPI } from '~/apis '
+import { registerUserAPI } from '~/apis'
 import { toast } from 'react-toastify'
 import {
   FIELD_REQUIRED_MESSAGE,
