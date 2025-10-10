@@ -52,7 +52,7 @@ export const activeBoardSlice = createSlice({
                 }
 
             })
-            //Update dữ liệu của currentActiveBoard
+            //Update dữ liệu của
             state.currentActiveBoard = board
         })
     }
