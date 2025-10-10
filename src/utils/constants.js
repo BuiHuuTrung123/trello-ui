@@ -10,4 +10,3 @@
 // export const API_ROOT = apiRoot
 export const API_ROOT = import.meta.env.VITE_API_ROOT
 
-console.log('API ROOT đang dùng:', API_ROOT)

@@ -1,5 +1,5 @@
 // TrungQuanDev: https://youtube.com/@trungquandev
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
 import { useForm } from 'react-hook-form'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import { registerUserAPI } from '~/apis '
+import { toast } from 'react-toastify'
 import {
   FIELD_REQUIRED_MESSAGE,
   EMAIL_RULE,
@@ -22,12 +24,21 @@ import {
 } from '~/utils/validators'
 function RegisterForm() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm()
+  const navigate = useNavigate()
   const submitRegister = (data) => {
-    console.log(data)
+    const { email, password } = data
+    toast.promise(registerUserAPI({ email, password }),
+    {pending: 'Registration is in progress ...'}
+  ).then(user =>{
+    navigate(`/login?registeredEmail=${user.email}`)
+  })
+  }
+  const error = (data) => {
+
   }
   return (
     // <form onSubmit={handleSubmit(submitRegister)}>
-    <form onSubmit={handleSubmit(submitRegister)}>
+    <form onSubmit={handleSubmit(submitRegister,error)}>
       <Zoom in={true} style={{ transitionDelay: '200ms' }}>
         <MuiCard sx={{ minWidth: 380, maxWidth: 380, marginTop: '6em' }}>
           <Box sx={{
@@ -86,14 +97,14 @@ function RegisterForm() {
                 type="password"
                 variant="outlined"
                 error={!!errors['password_confirmation']}
-                {...register('password_confirmation',{
+                {...register('password_confirmation', {
                   validate: (value) => {
-                 if(value === watch('password')) return true
-                 return 'Password Confirmation does not match!'
+                    if (value === watch('password')) return true
+                    return 'Password Confirmation does not match!'
                   }
                 })}
               />
-                <FieldErrorAlert errors={errors} fieldName={'password_confirmation'} />
+              <FieldErrorAlert errors={errors} fieldName={'password_confirmation'} />
             </Box>
           </Box>
           <CardActions sx={{ padding: '0 1em 1em 1em' }}>

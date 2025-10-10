@@ -15,7 +15,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-
+import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 function Board() {
   const dispatch = useDispatch()
 
@@ -28,8 +28,10 @@ function Board() {
     // const boardId = '68d947219caaf619948c733a '
     //call api
     dispatch(fetchBoardDetailsAPI(boardId))
-
-
+ dispatch(fetchBoardDetailsAPI(boardId))
+ dispatch(fetchBoardDetailsAPI(boardId))
+  dispatch(fetchBoardDetailsAPI(boardId))
+   dispatch(fetchBoardDetailsAPI(boardId))
   }, [dispatch, boardId])
 
   // nhiem vu goi api tao moi column va lam lai du lieu state board
@@ -112,7 +114,7 @@ function Board() {
   }
   if (!board) {
     return (
-      <Box>Loading...</Box>
+     <PageLoadingSpinner caption= 'Loading Board ...'/>
     )
   }
   return (
