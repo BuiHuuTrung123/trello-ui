@@ -79,13 +79,27 @@ function AccountTab() {
     reqData.append('avatar', e.target?.files[0])
     // Cách để log được dữ liệu thông qua FormData
 
-    for (const value of reqData.values()) {
+    // for (const value of reqData.values()) {
 
-    }
+    // }
 
     // Gọi API...
-  }
+     toast.promise(
+      dispatch(updateUserAPI(reqData)),
+      { pending: 'Updating ...' }
+    )
+      .then(res => {
+        // Kiểm tra ko có lỗi thì điều hướng
+        if (!res.error) { toast.success('User updated successfully') }
+       //luu y du co loi hay ko van phai clear the input
+       e.target.value = ''
+      })
 
+  }
+if (!currentUser) {
+  return <Typography>Loading user data...</Typography>;
+}
+console.log(currentUser)
   return (
     <Box sx={{
       width: '100%',

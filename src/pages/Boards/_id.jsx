@@ -28,10 +28,6 @@ function Board() {
     // const boardId = '68d947219caaf619948c733a '
     //call api
     dispatch(fetchBoardDetailsAPI(boardId))
- dispatch(fetchBoardDetailsAPI(boardId))
- dispatch(fetchBoardDetailsAPI(boardId))
-  dispatch(fetchBoardDetailsAPI(boardId))
-   dispatch(fetchBoardDetailsAPI(boardId))
   }, [dispatch, boardId])
 
   // nhiem vu goi api tao moi column va lam lai du lieu state board
