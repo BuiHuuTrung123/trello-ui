@@ -6,6 +6,7 @@ import AccoutVerification from '~/pages/Auth/AccoutVerifycation'
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import Settings from '~/pages/Settings/Settings'
+import Boards from '~/pages/Boards'
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
   return <Outlet />
@@ -23,11 +24,11 @@ function App() {
       } />
       <Route element={<ProtectedRoute user={currentUser} />} >
         {/* BoardDetail */}
-
         <Route path='/boards/:boardId' element={<Board />} />
+          <Route path='/boards' element={<Boards />} />
         {/* User Setting */}
-        <Route path='/settings/account' element={<Settings/>} />
-         <Route path='/settings/security' element={<Settings />} />
+        <Route path='/settings/account' element={<Settings />} />
+        <Route path='/settings/security' element={<Settings />} />
       </Route>
       {/* Authentication */}
       <Route path='/login' element={<Auth />} />
