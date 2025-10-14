@@ -24,12 +24,13 @@ import { ACTIVE_DRAG_ITEM_TYPE } from '~/constants/constant'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close';
 import { cloneDeep } from 'lodash'
-import { createNewCardApi } from '~/apis'
+import { createNewCardApi, updateColumnDetailsApi } from '~/apis'
 import {
     updateCurrentActiveBoard,
     selectCurrentActiveBoard
 } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
 function Column({ column }) {
     // Lấy dữ liệu state trong redux
     const board = useSelector(selectCurrentActiveBoard)
@@ -100,6 +101,19 @@ function Column({ column }) {
         toggleOpenNewCardForm()
         setNewCardTitle('')
     }
+    const onUpdateColumnTitle = (newTitle) => {
+        updateColumnDetailsApi(column._id, { title: newTitle }).then(() => {
+            const newBoard = cloneDeep(board)
+
+            const columnToUpdate = newBoard.columns.find(c => c._id === column._id)
+
+            if (columnToUpdate) {
+
+                columnToUpdate.title = newTitle
+            }
+            dispatch(updateCurrentActiveBoard(newBoard))
+        })
+    }
     return (
         <div ref={setNodeRef}
             style={dndKitColumnStyles}
@@ -130,13 +144,18 @@ function Column({ column }) {
                     alignItems: 'center',
                     justifyContent: 'space-between'
                 }}>
-                    <Typography variant='h6'
+                    {/* <Typography variant='h6'
                         sx={{
                             fontSize: '1.1rem',
                             fontWeight: 'bold',
                             cursor: 'pointer'
                         }}
-                    >{column?.title} </Typography>
+                    >{column?.title} </Typography> */}
+                    <ToggleFocusInput
+                        value={column?.title}
+                        onChangedValue={onUpdateColumnTitle}
+                        data-no-dnd='true'
+                    />
                     <Box>
                         <Tooltip title='More options'>
                             <KeyboardArrowDownIcon
