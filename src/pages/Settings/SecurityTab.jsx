@@ -21,7 +21,7 @@ function SecurityTab() {
   // Ôn lại: https://www.npmjs.com/package/material-ui-confirm
   const confirmChangePassword = useConfirm()
   const submitChangePassword = (data) => {
-  console.log('Form submitted ✅',data)
+  
     confirmChangePassword({
     
       // Title, Description, Content...vv của gói material-ui-confirm đều có type là ReactNode nên có thể thoải sử dụng MUI components, rất tiện lợi khi cần custom styles
@@ -33,7 +33,7 @@ function SecurityTab() {
       cancellationText: 'Cancel'
     }).then(() => {
       const { current_password, new_password} = data
-       console.log('User confirmed ✅')
+    
        // Gọi API...
    toast.promise(
            dispatch(updateUserAPI({ current_password, new_password })),

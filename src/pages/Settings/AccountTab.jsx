@@ -67,7 +67,7 @@ function AccountTab() {
 
   const uploadAvatar = (e) => {
     // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
-    console.log('e.target?.files[0]: ', e.target?.files[0])
+
     const error = singleFileValidator(e.target?.files[0])
     if (error) {
       toast.error(error)
@@ -99,7 +99,7 @@ function AccountTab() {
 if (!currentUser) {
   return <Typography>Loading user data...</Typography>;
 }
-console.log(currentUser)
+
   return (
     <Box sx={{
       width: '100%',
