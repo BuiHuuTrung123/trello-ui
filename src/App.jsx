@@ -18,9 +18,8 @@ function App() {
   return (
     <Routes>
       {/* Redirect Route */}
-
-  <Route path='/' element={<RedirectToBoard />} />
       <Route element={<ProtectedRoute user={currentUser} />} >
+        <Route path='/' element={<RedirectToBoard />} />
         {/* BoardDetail */}
         <Route path='/boards/:boardId' element={<Board />} />
         <Route path='/boards' element={<Boards />} />
