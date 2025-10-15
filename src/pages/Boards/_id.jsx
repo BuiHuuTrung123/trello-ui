@@ -16,11 +16,13 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
+import ActiveCard from '~/components/Modal/ActiveCard/ActiveCard'
+import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice';
 function Board() {
   const dispatch = useDispatch()
 
   const board = useSelector(selectCurrentActiveBoard)
-
+  const card = useSelector(selectCurrentActiveCard)
   const { boardId } = useParams()
 
   useEffect(() => {
@@ -33,28 +35,7 @@ function Board() {
   // nhiem vu goi api tao moi column va lam lai du lieu state board
 
 
-  const createNewCard = async (newCardData) => {
-    const createdCard = await createNewCardApi({
-      ...newCardData,
-      boardId: board._id,
-
-    })
-    const newBoard = cloneDeep(board)
-    const columnToUpdate = newBoard.columns.find(c => c._id === createdCard.columnId)
-    if (columnToUpdate) {
-      if (columnToUpdate.cards.some(card => card.FE_PlaceholderCard)) {
-        columnToUpdate.cards = [createdCard]
-        columnToUpdate.cardOrderIds = [createdCard._id]
-      }
-      else {
-        columnToUpdate.cards.push(createdCard)
-        columnToUpdate.cardOrderIds.push(createdCard._id)
-      }
-
-      //
-    }
-    dispatch(updateCurrentActiveBoard(newBoard))
-  }
+  
 
   const moveColumns = (dndOrderedColumns) => {
     const dndOrderedColumnsIds = dndOrderedColumns.map(c => c._id)
@@ -110,12 +91,17 @@ function Board() {
   }
   if (!board) {
     return (
-     <PageLoadingSpinner caption= 'Loading Board ...'/>
+      <PageLoadingSpinner caption='Loading Board ...' />
     )
   }
   return (
 
     <Container disableGutters maxWidth={false} sx={{ height: '100vh', minWidth: '100vw' }}>
+      {/* Modal Active Card, check đóng/mở dựa theo điều kiện có tồn tại data activeCard lưu trong Redux hay không
+        thì mới render. Mỗi thời điểm chỉ tồn tại một cái Modal Card đang Active  */}
+      {card && <ActiveCard />}
+
+
       <AppBar />
       <Box sx={{
         backgroundImage: (theme) => theme.palette.mode === "light"

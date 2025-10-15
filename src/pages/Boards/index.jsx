@@ -64,12 +64,12 @@ function Boards() {
     setTotalBoards(res.totalBoards || 0)
   }
   useEffect(() => {
+
     // Fake tạm 16 cái item thay cho boards
     // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
     // setBoards([...Array(16)].map((_, i) => i))
     // // Fake tạm giả sử trong Database trả về có tổng 100 bản ghi boards
     // setTotalBoards(100)
-
     fetchBoardsAPI(location.search).then(updateStateData)
  
     // Gọi API lấy danh sách boards ở đây...

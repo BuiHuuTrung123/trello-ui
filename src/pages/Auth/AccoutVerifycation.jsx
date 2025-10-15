@@ -3,6 +3,7 @@ import { useSearchParams, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 import { verifyUserAPI } from '~/apis'
+import { createNewBoardAPI } from '~/apis'
 function AccoutVerification() {
     //Lấy giá trị email và token từ url
     let [searchParams] = useSearchParams()
@@ -13,8 +14,9 @@ function AccoutVerification() {
     // gọi api để verifi tk
     useEffect(() => {
         if (email && token) {
-            verifyUserAPI({email, token}).then(() => setVerified(true))
+            verifyUserAPI({ email, token }).then(() => setVerified(true))
         }
+      
     }, [email, token])
     //Nếu url có vấn đề thì đá sang 404
     if (!email || !token) {

@@ -22,23 +22,27 @@ import {
   PASSWORD_RULE_MESSAGE,
   PASSWORD_CONFIRMATION_MESSAGE
 } from '~/utils/validators'
+import { createNewBoardAPI } from '~/apis'
 function RegisterForm() {
   const { register, handleSubmit, formState: { errors }, watch } = useForm()
   const navigate = useNavigate()
   const submitRegister = (data) => {
     const { email, password } = data
     toast.promise(registerUserAPI({ email, password }),
-    {pending: 'Registration is in progress ...'}
-  ).then(user =>{
-    navigate(`/login?registeredEmail=${user.email}`)
-  })
+      { pending: 'Registration is in progress ...' }
+    ).then(user => {
+      navigate(`/login?registeredEmail=${user.email}`)
+   
+     
+
+    })
   }
   const error = (data) => {
 
   }
   return (
     // <form onSubmit={handleSubmit(submitRegister)}>
-    <form onSubmit={handleSubmit(submitRegister,error)}>
+    <form onSubmit={handleSubmit(submitRegister, error)}>
       <Zoom in={true} style={{ transitionDelay: '200ms' }}>
         <MuiCard sx={{ minWidth: 380, maxWidth: 380, marginTop: '6em' }}>
           <Box sx={{
