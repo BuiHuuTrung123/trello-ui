@@ -26,11 +26,11 @@ function CardUserGroup({ cardMemberIds = [] }) {
       {/* Hiển thị các user là thành viên của card */}
       {[...Array(8)].map((_, index) =>
         <Tooltip title="trungquandev" key={index}>
-          <Avatar
+          {/* <Avatar
             sx={{ width: 34, height: 34, cursor: 'pointer' }}
             alt="trungquandev"
             src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
-          />
+          /> */}
         </Tooltip>
       )}
 
@@ -79,11 +79,11 @@ function CardUserGroup({ cardMemberIds = [] }) {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 badgeContent={<CheckCircleIcon fontSize="small" sx={{ color: '#27ae60' }} />}
               >
-                <Avatar
+                {/* <Avatar
                   sx={{ width: 34, height: 34 }}
                   alt="trungquandev"
                   src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
-                />
+                /> */}
               </Badge>
             </Tooltip>
           )}
