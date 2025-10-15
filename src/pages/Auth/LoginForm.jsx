@@ -32,11 +32,11 @@ function LoginForm() {
   let [searchParams] = useSearchParams()
   const registeredEmail = searchParams.get('registeredEmail')
   const verifiedEmail = searchParams.get('verifiedEmail')
-  const submitLogIn = async (data) => {
+  const submitLogIn =  (data) => {
     const { email, password } = data
 
 
-    await toast.promise(
+     toast.promise(
       dispatch(loginUserAPI({ email, password })),
       { pending: 'logging is in progress ...' }
     )

@@ -23,7 +23,7 @@ function CardActivitySection() {
         userDisplayName: currentUser?.displayName,
         content: event.target.value.trim()
       }
-      console.log(commentToAdd)
+ 
     }
   }
 
@@ -52,13 +52,13 @@ function CardActivitySection() {
       }
       {[...Array(6)].map((_, index) =>
         <Box sx={{ display: 'flex', gap: 1, width: '100%', mb: 1.5 }} key={index}>
-          <Tooltip title="trungquandev">
+          {/* <Tooltip title="trungquandev">
             <Avatar
               sx={{ width: 36, height: 36, cursor: 'pointer' }}
               alt="trungquandev"
               src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
             />
-          </Tooltip>
+          </Tooltip> */}
           <Box sx={{ width: 'inherit' }}>
             <Typography variant="span" sx={{ fontWeight: 'bold', mr: 1 }}>
               Quan Do
