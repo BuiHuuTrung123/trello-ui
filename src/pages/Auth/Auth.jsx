@@ -22,7 +22,7 @@ if(currentUser){
       minHeight: '100vh',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      background: 'url("src/assets/auth/login-register-bg.jpg")',
+      background: 'url("https://res.cloudinary.com/trungbui/image/upload/v1760490462/users/vddxiqc9idlxm16qmlbq.jpg")',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
       backgroundPosition: 'center',

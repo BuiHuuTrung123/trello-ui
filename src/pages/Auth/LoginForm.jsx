@@ -16,6 +16,7 @@ import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loginUserAPI } from '~/redux/user/userSlice'
+import { getBoardId } from '~/apis'
 import { toast } from 'react-toastify'
 import {
   FIELD_REQUIRED_MESSAGE,
@@ -31,17 +32,29 @@ function LoginForm() {
   let [searchParams] = useSearchParams()
   const registeredEmail = searchParams.get('registeredEmail')
   const verifiedEmail = searchParams.get('verifiedEmail')
-  const submitLogIn = (data) => {
+  const submitLogIn = async (data) => {
     const { email, password } = data
-    toast.promise(
+
+
+    await toast.promise(
       dispatch(loginUserAPI({ email, password })),
       { pending: 'logging is in progress ...' }
     )
       .then(res => {
+      
         // Kiểm tra ko có lỗi thì điều hướng
-        if (!res.error) navigate('/')
-
+           if (!res.error) navigate(`/`)
       })
+
+
+// await getBoardId({ email }).then((res) => {
+//   if (res && !res.error) {
+     
+//     navigate(`/boards/${res._id}`)
+//   }
+// })
+    // lay boardId tuong ung voi email
+
   }
   return (
     // <form onSubmit={handleSubmit(submitLogIn)}>

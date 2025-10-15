@@ -62,3 +62,9 @@ export const createNewBoardAPI = async (data) => {
   toast.success('Board created successfully')
   return response.data
 }
+
+
+export const getBoardId = async ({ email }) => {
+  const response = await authorizeAxiosInstance.get(`${API_ROOT}/v1/boards/boardId`, { params: { email } })
+  return response.data
+}

@@ -7,25 +7,23 @@ import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import Settings from '~/pages/Settings/Settings'
 import Boards from '~/pages/Boards'
+import RedirectToBoard from '~/components/RedirectToBoard/RedirectToBoard'
 const ProtectedRoute = ({ user }) => {
   if (!user) return <Navigate to='/login' replace={true} />
   return <Outlet />
 }
 function App() {
+
   const currentUser = useSelector(selectCurrentUser)
   return (
     <Routes>
       {/* Redirect Route */}
 
-      <Route path='/' element={
-        // replace={true} thay the route / , hieu la route / ko nam trong history cua browser nua 
-
-        <Navigate to="boards/68d947219caaf619948c733a" replace={true} />
-      } />
+  <Route path='/' element={<RedirectToBoard />} />
       <Route element={<ProtectedRoute user={currentUser} />} >
         {/* BoardDetail */}
         <Route path='/boards/:boardId' element={<Board />} />
-          <Route path='/boards' element={<Boards />} />
+        <Route path='/boards' element={<Boards />} />
         {/* User Setting */}
         <Route path='/settings/account' element={<Settings />} />
         <Route path='/settings/security' element={<Settings />} />
