@@ -25,12 +25,12 @@ function CardUserGroup({ cardMemberIds = [] }) {
     <Box sx={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
       {/* Hiển thị các user là thành viên của card */}
       {[...Array(8)].map((_, index) =>
-        <Tooltip title="trungquandev" key={index}>
-          {/* <Avatar
+        <Tooltip title="trungbuidev" key={index}>
+          <Avatar
             sx={{ width: 34, height: 34, cursor: 'pointer' }}
-            alt="trungquandev"
-            src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
-          /> */}
+            alt="trungbuidev"
+            src=""
+          />
         </Tooltip>
       )}
 
@@ -71,7 +71,7 @@ function CardUserGroup({ cardMemberIds = [] }) {
       >
         <Box sx={{ p: 2, maxWidth: '260px', display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
           {[...Array(16)].map((_, index) =>
-            <Tooltip title="trungquandev" key={index}>
+            <Tooltip title="trungbuidev" key={index}>
               {/* Cách làm Avatar kèm badge icon: https://mui.com/material-ui/react-avatar/#with-badge */}
               <Badge
                 sx={{ cursor: 'pointer' }}
@@ -79,11 +79,11 @@ function CardUserGroup({ cardMemberIds = [] }) {
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 badgeContent={<CheckCircleIcon fontSize="small" sx={{ color: '#27ae60' }} />}
               >
-                {/* <Avatar
+                <Avatar
                   sx={{ width: 34, height: 34 }}
-                  alt="trungquandev"
-                  src="https://trungquandev.com/wp-content/uploads/2019/06/trungquandev-cat-avatar.png"
-                /> */}
+                  alt="trungbuidev"
+                  src=""
+                />
               </Badge>
             </Tooltip>
           )}

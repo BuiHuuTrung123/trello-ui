@@ -10,9 +10,11 @@ const markdownValueExample = `
   *\`Markdown Content Example:\`*
 
   **Hello world | TrungBuiDev - Một Lập Trình Viên |**
-  [![]()
-  \`\`\`
-
+  [![]()]()
+  \`\`\`javascript
+  Xin chào nhà tuyển dụng
+  Ngày mới vui vẻ
+  Tràn đầy hạnh phúc
   \`\`\`
 `
 /**
