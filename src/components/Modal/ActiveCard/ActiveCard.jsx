@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Modal from '@mui/material/Modal'
 import Typography from '@mui/material/Typography'
@@ -36,10 +35,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   clearCurrentActiveCard,
   selectCurrentActiveCard,
-  updateCurrentActiveCard
-} from '~/redux/activeCard/activeCardSlice';
-
+  updateCurrentActiveCard,
+} from '~/redux/activeCard/activeCardSlice'
+import {updateCardInBoard} from '~/redux/activeBoard/activeBoardSlice'
 import { styled } from '@mui/material/styles'
+import { updateCardDetailsApi } from '~/apis'
+
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -73,10 +74,25 @@ function ActiveCard() {
     // setIsOpen(false)
     dispatch(clearCurrentActiveCard())
   }
+  // dùng chung cho update card title,comment, desciption ...
+  const callApiUpdateCard = async (updateData) => {
+    const updatedCard = await updateCardDetailsApi(activeCard._id, updateData)
+    //b1: Cập nhật lại cái card đang active trong modal hiện tại
+    dispatch(updateCurrentActiveCard(updatedCard))
+    //b2 cập nhật bản ghi card trong activeBoard (nested data)
+    dispatch(updateCardInBoard(updatedCard))
 
+    return updatedCard
+  }
   const onUpdateCardTitle = (newTitle) => {
     // Gọi API...
+   
+    callApiUpdateCard({ title: newTitle.trim() })
+  }
 
+   const onUpdateCardDesciption = (newDescription) => {
+    // Gọi API...
+    callApiUpdateCard({ description: newDescription })
   }
 
   const onUploadCardCover = (event) => {
@@ -90,6 +106,10 @@ function ActiveCard() {
     reqData.append('cardCover', event.target?.files[0])
 
     // Gọi API...
+    toast.promise(
+      callApiUpdateCard(reqData).finally(()=> event.target.value =''),
+      {pending: 'Updatin...'}
+    )
   }
 
   return (
@@ -122,7 +142,7 @@ function ActiveCard() {
         {activeCard?.cover && <Box sx={{ mb: 4 }}>
           <img
             style={{ width: '100%', height: '320px', borderRadius: '6px', objectFit: 'cover' }}
-            src={activeCard?.cover }
+            src={activeCard?.cover}
             alt="card-cover"
           />
         </Box>
@@ -156,7 +176,10 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor />
+              <CardDescriptionMdEditor 
+              cardDesciptionProp = {activeCard?.description}
+              handleUpdateCardDesciption= {onUpdateCardDesciption}
+              />
             </Box>
 
             <Box sx={{ mb: 3 }}>

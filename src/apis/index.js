@@ -68,3 +68,8 @@ export const getBoardId = async ({ email }) => {
   const response = await authorizeAxiosInstance.get(`${API_ROOT}/v1/boards/boardId`, { params: { email } })
   return response.data
 }
+
+export const updateCardDetailsApi = async (cardId, updateData) => {
+    const response = await authorizeAxiosInstance.put(`${API_ROOT}/v1/cards/${cardId}`, updateData)
+    return response.data
+}

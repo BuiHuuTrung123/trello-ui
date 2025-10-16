@@ -10,6 +10,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import MailIcon from '@mui/icons-material/Mail'
 import AccountBoxIcon from '@mui/icons-material/AccountBox'
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Paper from '@mui/material/Paper'
+import { useTheme } from '@mui/material/styles'
 
 import { FIELD_REQUIRED_MESSAGE, singleFileValidator } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
@@ -19,189 +23,274 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import VisuallyHiddenInput from '~/components/Form/VisuallyHiddenInput'
 
-// Xử lý custom đẹp cái input file ở đây: https://mui.com/material-ui/react-button/#file-upload
-// Ngoài ra note thêm lib này từ docs của MUI nó recommend nếu cần dùng: https://github.com/viclafouch/mui-file-input
-
-
 function AccountTab() {
   const dispatch = useDispatch()
   const currentUser = useSelector(selectCurrentUser)
+  const theme = useTheme()
 
-  // Những thông tin của user để init vào form (key tương ứng với register phía dưới Field)
   const initialGeneralForm = {
     displayName: currentUser?.displayName
   }
-  // Sử dụng defaultValues để set giá trị mặc định cho các field cần thiết
+
   const { register, handleSubmit, formState: { errors } } = useForm({
     defaultValues: initialGeneralForm
   })
 
   const submitChangeGeneralInformation = (data) => {
     const { displayName } = data
- 
 
-    // Nếu không có sự thay đổi gì về displayname thì không làm gì cả
     if (displayName === currentUser?.displayName) return
 
-    // Gọi API...
     toast.promise(
       dispatch(updateUserAPI({ displayName })),
       { pending: 'Updating ...' }
-    )
-      .then(res => {
-        // Kiểm tra ko có lỗi thì điều hướng
-        if (!res.error) { toast.success('User updated successfully') }
-
-      })
+    ).then(res => {
+      if (!res.error) { 
+        toast.success('User updated successfully') 
+      }
+    })
   }
 
   const uploadAvatar = (e) => {
-    // Lấy file thông qua e.target?.files[0] và validate nó trước khi xử lý
-
     const error = singleFileValidator(e.target?.files[0])
     if (error) {
       toast.error(error)
       return
     }
 
-    // Sử dụng FormData để xử lý dữ liệu liên quan tới file khi gọi API
     let reqData = new FormData()
     reqData.append('avatar', e.target?.files[0])
-    // Cách để log được dữ liệu thông qua FormData
 
-    // for (const value of reqData.values()) {
-
-    // }
-
-    // Gọi API...
-     toast.promise(
+    toast.promise(
       dispatch(updateUserAPI(reqData)),
       { pending: 'Updating ...' }
-    )
-      .then(res => {
-        // Kiểm tra ko có lỗi thì điều hướng
-        if (!res.error) { toast.success('User updated successfully') }
-       //luu y du co loi hay ko van phai clear the input
-       e.target.value = ''
-      })
-
+    ).then(res => {
+      if (!res.error) { 
+        toast.success('User updated successfully') 
+      }
+      e.target.value = ''
+    })
   }
-if (!currentUser) {
-  return <Typography>Loading user data...</Typography>;
-}
+
+  if (!currentUser) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+        <Typography variant="h6" color="text.secondary">
+          Loading user data...
+        </Typography>
+      </Box>
+    )
+  }
 
   return (
     <Box sx={{
       width: '100%',
-      height: '100%',
+      minHeight: '100%',
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      py: 4,
+      px: 2
     }}>
-      <Box sx={{
-        maxWidth: '1200px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 3
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Box>
-            <Avatar
-              sx={{ width: 84, height: 84, mb: 1 }}
-              alt="TrungQuanDev"
-              src={currentUser?.avatar}
-            />
-            <Tooltip title="Upload a new image to update your avatar immediately.">
-              <Button
-                component="label"
-                variant="contained"
-                size="small"
-                startIcon={<CloudUploadIcon />}>
-                Upload
-                <VisuallyHiddenInput type="file" onChange={uploadAvatar} />
-              </Button>
-            </Tooltip>
+      <Card 
+        sx={{ 
+          maxWidth: '800px', 
+          width: '100%',
+          boxShadow: theme.shadows[3],
+          borderRadius: 2,
+          overflow: 'visible'
+        }}
+      >
+        <CardContent sx={{ p: 4 }}>
+          {/* Header Section */}
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography 
+              variant="h4" 
+              component="h1" 
+              gutterBottom
+              sx={{ 
+                fontWeight: 600,
+                color: theme.palette.primary.main
+              }}
+            >
+              Account Settings
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Manage your account information and preferences
+            </Typography>
           </Box>
-          <Box>
-            <Typography variant="h6">{currentUser?.displayName}</Typography>
-            <Typography sx={{ color: 'grey' }}>@{currentUser?.username}</Typography>
-          </Box>
-        </Box>
 
-        <form onSubmit={handleSubmit(submitChangeGeneralInformation)}>
-          <Box sx={{ width: '400px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Box>
-              <TextField
-                disabled
-                defaultValue={currentUser?.email}
-                fullWidth
-                label="Your Email"
-                type="text"
-                variant="filled"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MailIcon fontSize="small" />
-                    </InputAdornment>
-                  )
-                }}
-              />
+          {/* Profile Section */}
+          <Paper 
+            elevation={1} 
+            sx={{ 
+              p: 3, 
+              mb: 4, 
+              borderRadius: 2,
+              background: `linear-gradient(135deg, ${theme.palette.primary.light}15, ${theme.palette.secondary.light}15)`
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
+              <Box sx={{ textAlign: 'center', flexShrink: 0 }}>
+                <Avatar
+                  sx={{ 
+                    width: 100, 
+                    height: 100, 
+                    mb: 2,
+                    border: `3px solid ${theme.palette.primary.main}`,
+                    boxShadow: theme.shadows[2]
+                  }}
+                  alt={currentUser?.displayName}
+                  src={currentUser?.avatar}
+                />
+                <Tooltip title="Upload a new image to update your avatar immediately">
+                  <Button
+                    component="label"
+                    variant="outlined"
+                    size="small"
+                    startIcon={<CloudUploadIcon />}
+                    sx={{
+                      borderRadius: 2,
+                      textTransform: 'none',
+                      fontWeight: 500
+                    }}
+                  >
+                    Change Avatar
+                    <VisuallyHiddenInput type="file" onChange={uploadAvatar} />
+                  </Button>
+                </Tooltip>
+              </Box>
+              
+              <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
+                  {currentUser?.displayName}
+                </Typography>
+                <Typography 
+                  variant="subtitle1" 
+                  sx={{ 
+                    color: 'text.secondary',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 0.5
+                  }}
+                >
+                  @{currentUser?.username}
+                </Typography>
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    color: 'text.secondary',
+                    mt: 1,
+                    display: { xs: 'none', sm: 'block' }
+                  }}
+                >
+                  Update your avatar and personal information here. Your avatar will be visible to other users.
+                </Typography>
+              </Box>
             </Box>
+          </Paper>
 
-            <Box>
-              <TextField
-                disabled
-                defaultValue={currentUser?.username}
-                fullWidth
-                label="Your Username"
-                type="text"
-                variant="filled"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountBoxIcon fontSize="small" />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Box>
+          {/* Form Section */}
+          <Paper elevation={1} sx={{ p: 3, borderRadius: 2 }}>
+            <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+              Personal Information
+            </Typography>
+            
+            <form onSubmit={handleSubmit(submitChangeGeneralInformation)}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <TextField
+                  disabled
+                  defaultValue={currentUser?.email}
+                  fullWidth
+                  label="Email Address"
+                  type="text"
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailIcon fontSize="small" color="action" />
+                      </InputAdornment>
+                    )
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2
+                    }
+                  }}
+                />
 
-            <Box>
-              <TextField
-                fullWidth
-                label="Your Display Name"
-                type="text"
-                variant="outlined"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AssignmentIndIcon fontSize="small" />
-                    </InputAdornment>
-                  )
-                }}
-                {...register('displayName', {
-                  required: FIELD_REQUIRED_MESSAGE
-                })}
-                error={!!errors['displayName']}
-              />
-              <FieldErrorAlert errors={errors} fieldName={'displayName'} />
-            </Box>
+                <TextField
+                  disabled
+                  defaultValue={currentUser?.username}
+                  fullWidth
+                  label="Username"
+                  type="text"
+                  variant="outlined"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <AccountBoxIcon fontSize="small" color="action" />
+                      </InputAdornment>
+                    )
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2
+                    }
+                  }}
+                />
 
-            <Box>
-              <Button
-                className="interceptor-loading"
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth>
-                Update
-              </Button>
-            </Box>
-          </Box>
-        </form>
-      </Box>
+                <Box>
+                  <TextField
+                    fullWidth
+                    label="Display Name"
+                    type="text"
+                    variant="outlined"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentIndIcon fontSize="small" color="action" />
+                        </InputAdornment>
+                      )
+                    }}
+                    {...register('displayName', {
+                      required: FIELD_REQUIRED_MESSAGE
+                    })}
+                    error={!!errors['displayName']}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 2
+                      }
+                    }}
+                  />
+                  <FieldErrorAlert errors={errors} fieldName={'displayName'} />
+                </Box>
+
+                <Button
+                  className="interceptor-loading"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  fullWidth
+                  sx={{
+                    borderRadius: 2,
+                    py: 1.5,
+                    textTransform: 'none',
+                    fontSize: '1rem',
+                    fontWeight: 600,
+                    boxShadow: theme.shadows[2],
+                    '&:hover': {
+                      boxShadow: theme.shadows[4]
+                    }
+                  }}
+                >
+                  Update Profile
+                </Button>
+              </Box>
+            </form>
+          </Paper>
+        </CardContent>
+      </Card>
     </Box>
   )
 }

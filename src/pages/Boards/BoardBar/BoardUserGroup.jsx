@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar'
 import Tooltip from '@mui/material/Tooltip'
 import Popover from '@mui/material/Popover'
 
-function BoardUserGroup({ boardUsers = [], limit = 8 }) {
+function BoardUserGroup({ boardUsers = [], limit = 2 }) {
   /**
    * Xử lý Popover để ẩn hoặc hiện toàn bộ user trên một cái popup, tương tự docs để tham khảo ở đây:
    * https://mui.com/material-ui/react-popover/
@@ -21,7 +21,7 @@ function BoardUserGroup({ boardUsers = [], limit = 8 }) {
   return (
     <Box sx={{ display: 'flex', gap: '4px' }}>
       {/* Hiển thị giới hạn số lượng user theo số limit */}
-      {[...Array(16)].map((_, index) => {
+      {[...Array(3)].map((_, index) => {
         if (index < limit) {
           return (
             <Tooltip title="trungquandev" key={index}>
@@ -36,7 +36,7 @@ function BoardUserGroup({ boardUsers = [], limit = 8 }) {
       })}
 
       {/* Nếu số lượng users nhiều hơn limit thì hiện thêm +number */}
-      {[...Array(16)].length > limit &&
+      {[...Array(3)].length > limit &&
         <Tooltip title="Show more">
           <Box
             aria-describedby={popoverId}
@@ -55,7 +55,7 @@ function BoardUserGroup({ boardUsers = [], limit = 8 }) {
               backgroundColor: '#a4b0be'
             }}
           >
-            +{[...Array(16)].length - limit}
+            +{[...Array(3)].length - limit}
           </Box>
         </Tooltip>
       }
@@ -69,7 +69,7 @@ function BoardUserGroup({ boardUsers = [], limit = 8 }) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <Box sx={{ p: 2, maxWidth: '235px', display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-          {[...Array(16)].map((_, index) =>
+          {[...Array(1)].map((_, index) =>
             <Tooltip title="trungquandev" key={index}>
               <Avatar
                 sx={{ width: 34, height: 34, cursor: 'pointer' }}
