@@ -7,6 +7,7 @@ import { generatePlaceholderCard } from '~/utils/formatter'
 //Khởi tạo giá trị state của 1 cái slice trong redux
 const initialState = {
     currentActiveBoard: null,
+    backUpData: null,
 }
 //Các hành động gọi api (bất đồng bộ) và cập nhật dữ liệu vào Redux, dùng Middleware createAsyncThunk đi kèm với extraReducers
 export const fetchBoardDetailsAPI = createAsyncThunk(
@@ -15,6 +16,13 @@ export const fetchBoardDetailsAPI = createAsyncThunk(
         const respone = await authorizeAxiosInstance.get(`${API_ROOT}/v1/boards/${boardId}`)
         // axios trả kết quả bằng property là data
         return respone.data
+    }
+)
+export const deleteCardApi = createAsyncThunk(
+    'activeBoard/deleteCardApi',
+    async (cardId) => {
+        const response = await authorizeAxiosInstance.delete(`${API_ROOT}/v1/cards/${cardId}`)
+        return response.data
     }
 )
 
@@ -47,7 +55,27 @@ export const activeBoardSlice = createSlice({
                     })
                 }
             }
-        }
+        },
+        moveCardInBoard: (state, action) => {
+            //update nested data
+            const incomingMoveCard = action.payload
+
+            //Tìm dần từ board -> column -> card
+            const column = state.currentActiveBoard.columns.find(i => i._id === incomingMoveCard.columnId)
+
+            if (column) {
+                column.cards = column.cards.filter(i => i._id !== incomingMoveCard._id)
+            }
+        },
+        // restoreCardToBoard: (state, action) => {
+        //     //update nested data
+        //     const incomingMoveCard = action.payload
+        //     //Tìm dần từ board -> column -> card
+        //     const column = state.currentActiveBoard.columns.find(i => i._id === incomingMoveCard.columnId)
+        //     if (column) {
+        //         column.cards.push(incomingMoveCard)
+        //     }
+        // }
 
     },
     //extraReducers nơi xử lý dữ liệu bất đồng bộ 
@@ -70,13 +98,33 @@ export const activeBoardSlice = createSlice({
             //Update dữ liệu của
             state.currentActiveBoard = board
         })
+
+        builder.addCase(deleteCardApi.pending, (state, action) => {
+         state.backUpData = JSON.parse(JSON.stringify(state.currentActiveBoard))
+         
+        })
+
+        builder.addCase(deleteCardApi.fulfilled, (state, action) => {
+           
+        
+            const incomingMoveCard = action.payload
+            // console.log(incomingMoveCard)
+            const column = state.currentActiveBoard.columns.find(i => i._id === incomingMoveCard.columnId)
+            if (column) {
+                column.cards = column.cards.filter(i => i._id !== incomingMoveCard._id)
+            }
+            state.backUpData = null
+        })
+
+        
+
     }
 
 })
 
 // actions: là nơi dành cho các components bên dưới gọi bằng dispatch() tới nó để cập nhật lại dữ liệu thông qua reducer (chạy đồng bộ)
 // để ý ở trên thì k thấy properties actions đâu cả, bởi vì những cái actions này đơn giản là được thằng redux tạo tự động theo tên của reducer
-export const { updateCurrentActiveBoard, updateCardInBoard } = activeBoardSlice.actions
+export const { updateCurrentActiveBoard, updateCardInBoard, moveCardInBoard } = activeBoardSlice.actions
 //Selector: Là nơi dành cho các components bên dưới gọi bằng hooke useSelector() để lấy dữ liệu từ trong kho redux store ra sử dụng 
 export const selectCurrentActiveBoard = (state) => {
     return state.activeBoard.currentActiveBoard

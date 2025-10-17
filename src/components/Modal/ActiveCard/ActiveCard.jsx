@@ -36,11 +36,14 @@ import {
   clearCurrentActiveCard,
   selectCurrentActiveCard,
   updateCurrentActiveCard,
+  
 } from '~/redux/activeCard/activeCardSlice'
-import {updateCardInBoard} from '~/redux/activeBoard/activeBoardSlice'
+import { updateCardInBoard,deleteCardApi } from '~/redux/activeBoard/activeBoardSlice'
 import { styled } from '@mui/material/styles'
 import { updateCardDetailsApi } from '~/apis'
-
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import { useConfirm } from 'material-ui-confirm'
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle'
 const SidebarItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -86,17 +89,16 @@ function ActiveCard() {
   }
   const onUpdateCardTitle = (newTitle) => {
     // Gọi API...
-   
+
     callApiUpdateCard({ title: newTitle.trim() })
   }
 
-   const onUpdateCardDesciption = (newDescription) => {
+  const onUpdateCardDesciption = (newDescription) => {
     // Gọi API...
     callApiUpdateCard({ description: newDescription })
   }
 
   const onUploadCardCover = (event) => {
-    console.log(event.target?.files[0])
     const error = singleFileValidator(event.target?.files[0])
     if (error) {
       toast.error(error)
@@ -107,10 +109,51 @@ function ActiveCard() {
 
     // Gọi API...
     toast.promise(
-      callApiUpdateCard(reqData).finally(()=> event.target.value =''),
-      {pending: 'Updatin...'}
+      callApiUpdateCard(reqData).finally(() => event.target.value = ''),
+      { pending: 'Updatin...' }
     )
   }
+  // xóa card
+  const confirmMoveCard = useConfirm()
+  const submitMoveCard = () => {
+    confirmMoveCard({
+      title: (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <RemoveCircleIcon sx={{ color: 'error.main' }} />
+          <Typography variant="h6" component="span">
+            Delete Card
+          </Typography>
+        </Box>
+      ),
+      description: 'You will delete the card. Do you want to continue?',
+      confirmationText: 'Confirm',
+      cancellationText: 'Cancel',
+      confirmationButtonProps: {
+        variant: 'contained',
+        color: 'warning',
+        sx: { borderRadius: 2 }
+      },
+      cancellationButtonProps: {
+        variant: 'outlined',
+        sx: { borderRadius: 2 }
+      }
+    }).then(() => {
+      handleCloseModal()
+      // dispatch(moveCardInBoard(activeCard))
+      dispatch(deleteCardApi(activeCard._id))
+        .then(res => {
+          if (!res.error) {
+            toast.success('Successfully Remove Card.')
+            // dispatch(logoutUserAPI(false))
+          }
+        })
+    }).catch((error) => {
+      console.log(error)
+
+    }
+    )
+  }
+
 
   return (
     <Modal
@@ -176,9 +219,9 @@ function ActiveCard() {
               </Box>
 
               {/* Feature 03: Xử lý mô tả của Card */}
-              <CardDescriptionMdEditor 
-              cardDesciptionProp = {activeCard?.description}
-              handleUpdateCardDesciption= {onUpdateCardDesciption}
+              <CardDescriptionMdEditor
+                cardDesciptionProp={activeCard?.description}
+                handleUpdateCardDesciption={onUpdateCardDesciption}
               />
             </Box>
 
@@ -229,11 +272,11 @@ function ActiveCard() {
 
             <Typography sx={{ fontWeight: '600', color: 'primary.main', mb: 1 }}>Actions</Typography>
             <Stack direction="column" spacing={1}>
-              <SidebarItem><ArrowForwardOutlinedIcon fontSize="small" />Move</SidebarItem>
-              <SidebarItem><ContentCopyOutlinedIcon fontSize="small" />Copy</SidebarItem>
+              <SidebarItem onClick={submitMoveCard}><DeleteForeverIcon fontSize="small" />Delete</SidebarItem>
+              {/* <SidebarItem><ContentCopyOutlinedIcon fontSize="small" />Copy</SidebarItem>
               <SidebarItem><AutoAwesomeOutlinedIcon fontSize="small" />Make Template</SidebarItem>
               <SidebarItem><ArchiveOutlinedIcon fontSize="small" />Archive</SidebarItem>
-              <SidebarItem><ShareOutlinedIcon fontSize="small" />Share</SidebarItem>
+              <SidebarItem><ShareOutlinedIcon fontSize="small" />Share</SidebarItem> */}
             </Stack>
           </Grid>
         </Grid>
